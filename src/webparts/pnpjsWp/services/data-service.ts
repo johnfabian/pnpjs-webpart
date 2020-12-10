@@ -1,9 +1,8 @@
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
 import { PageContext } from "@microsoft/sp-page-context";
 
-import { sp } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists/web";
+import { IItems, sp } from "@pnp/sp/presets/all";
+import { IList, IListInfo } from "@pnp/sp/lists";
 
 export interface IDataService {
     getLists(): Promise<any[]>;
@@ -16,18 +15,29 @@ export interface IDataService {
     constructor(serviceScope: ServiceScope) {
 
         serviceScope.whenFinished(() => {
+          
     
           const pageContext = serviceScope.consume(PageContext.serviceKey);         
           sp.setup({
-            sp : {
+            sp : {              
               baseUrl : pageContext.web.absoluteUrl
-            }
+              
+            }        
           });
+
         });
       }
 
-      public getLists():Promise<any[]> {
+      public getLists():Promise<IListInfo[]> {
         return sp.web.lists.get();
+      }
+
+      public getCalendarByTitle(title : string):Promise<IListInfo>{
+        return sp.web.lists.getByTitle(title).get();
+      }
+
+      public getCalenderEvents(title: string):Promise<IItems>{
+        return sp.web.lists.getByTitle(title).items.get();
       }
 
   }

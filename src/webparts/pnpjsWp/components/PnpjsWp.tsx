@@ -7,6 +7,8 @@ import { IList, IWebInfo, sp } from "@pnp/sp/presets/all";
 import {DataService} from "../services/data-service";
 
 export default class PnpjsWp extends React.Component<IPnpjsWpProps, {}> {
+
+   private _dataServiceInstance : DataService;
     
   constructor(props:IPnpjsWpProps ){
     super(props);   
@@ -14,12 +16,15 @@ export default class PnpjsWp extends React.Component<IPnpjsWpProps, {}> {
   }
 
   public async componentDidMount(){
-    console.log("Site Url", this.props.pageContext.web.absoluteUrl);
+    //console.log("Site Url", this.props.pageContext.web.absoluteUrl);
 
-    let _dataServiceInstance = this.props.serviceScope.consume(DataService.serviceKey) as DataService;
-    let lists = await _dataServiceInstance.getLists();
-    
-    console.log("DataService Lists", lists);
+    this._dataServiceInstance = this.props.serviceScope.consume(DataService.serviceKey) as DataService;
+    //let lists = await _dataServiceInstance.getLists();    
+    //console.log("DataService Lists", lists);
+
+    let calendar1 = await this._dataServiceInstance.getCalendarByTitle("Calendar1");
+    let items = await this._dataServiceInstance.getCalenderEvents("Calendar1");
+     console.log("items", items);
 
   } 
 
@@ -28,6 +33,7 @@ export default class PnpjsWp extends React.Component<IPnpjsWpProps, {}> {
     return(
       <div>
         <h3>Component</h3>
+        <h2>{this.props.description}</h2>
       </div>
     );
   }

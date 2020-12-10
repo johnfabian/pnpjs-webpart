@@ -25,8 +25,13 @@ export default class PnpjsWpWebPart extends BaseClientSideWebPart<IPnpjsWpWebPar
   protected async onInit(): Promise<void> {
 
     await super.onInit();
-    // other init code may be present  
-    sp.setup(this.context);
+    
+    sp.setup({
+      sp : {        
+        baseUrl : this.context.pageContext.web.absoluteUrl        
+      }          
+    });
+    
 
     let web = await sp.web.get();
     console.log("Web in SPFX", web.Title);
