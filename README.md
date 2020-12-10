@@ -2,7 +2,7 @@
 
 ## Summary
 
-Short summary on functionality and used technologies.
+Sample Spfx with @pnp/sp library using a service via service locator pattern and async await
 
 [picture of the solution in action, if possible]
 
